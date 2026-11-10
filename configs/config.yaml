@@ -1,5 +1,5 @@
-package_name: "requests"
-repository_url: "https://github.com/psf/requests"
-test_repo_mode: true
-package_version: "2.31.0"
-filter_substring: "req"
+package_name: "anyhow"
+repository_url: "https://github.com/dtolnay/anyhow"
+test_repo_mode: false
+package_version: "999.999.999"
+filter_substring: ""

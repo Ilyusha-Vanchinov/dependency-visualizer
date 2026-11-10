@@ -1,2 +1,5 @@
 PyYAML>=6.0
 pydantic>=2.0
+
+requests>=2.31.0
+toml>=0.10.2
