@@ -91,3 +91,50 @@ python main.py configs/config.yaml
 ОШИБКА: Некорректные значения параметров в конфигурации:
   - Параметр 'repository_url': Value error, URL должен начинаться с http://, https:// или быть локальным путем
 ```
+
+## Проверка работы (Этап 2)
+
+### 1. Успешный запуск (Вывод параметров)
+```
+python main.py configs/config.yaml
+```
+
+Ожидаемый вывод:
+```
+--- Текущая конфигурация ---                                                                                                                                                  
+package_name: anyhow                                                                                                                                                          
+repository_url: https://github.com/dtolnay/anyhow                                                                                                                             
+package_version: 1.0.75                                                                                                                                                       
+----------------------------
+
+Сбор данных о зависимостях для пакета 'anyhow' (версия: 1.0.75)...
+
+--- Прямые зависимости (1 шт.) ---
+- backtrace: {'version': '0.3.51', 'optional': True}
+-----------------------------------------
+
+Этап 2 успешно завершен.
+```
+
+### 2. Демонстрация обработки ошибок
+
+Действие: Укажите в конфиге package_version: "999.999.999". Запустите программу: 
+```
+python main.py configs/config.yaml
+```
+
+Ожидаемый вывод: 
+```
+--- Текущая конфигурация ---                                                                          
+package_name: anyhow                                                                                   
+repository_url: https://github.com/dtolnay/anyhow   
+package_version: 999.999.999                                                               
+----------------------------
+
+Сбор данных о зависимостях для пакета 'anyhow' (версия: 999.999.999)...
+
+ОШИБКА СБОРА ДАННЫХ:
+Не удалось найти файл Cargo.toml в репозитории.
+Проверены URL: ['https://raw.githubusercontent.com/dtolnay/anyhow/v999.999.999/Cargo.toml', 'https://raw.githubusercontent.com/dtolnay/anyhow/999.999.999/Cargo.toml']
+Убедитесь, что URL и версия (тег) указаны верно.
+```
