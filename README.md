@@ -91,3 +91,113 @@ python main.py configs/config.yaml
 ОШИБКА: Некорректные значения параметров в конфигурации:
   - Параметр 'repository_url': Value error, URL должен начинаться с http://, https:// или быть локальным путем
 ```
+
+## Проверка работы (Этап 2)
+
+### 1. Успешный запуск (Вывод параметров)
+
+```
+python main.py configs/config.yaml
+```
+
+Ожидаемый вывод:
+
+```
+--- Текущая конфигурация ---                                                                                                                                                  
+package_name: anyhow                                                                                                                                                          
+repository_url: https://github.com/dtolnay/anyhow                                                                                                                             
+package_version: 1.0.75                                                                                                                                                       
+----------------------------
+
+Сбор данных о зависимостях для пакета 'anyhow' (версия: 1.0.75)...
+
+--- Прямые зависимости (1 шт.) ---
+- backtrace: {'version': '0.3.51', 'optional': True}
+-----------------------------------------
+
+Этап 2 успешно завершен.
+```
+
+### 2. Демонстрация обработки ошибок
+
+Действие: Укажите в конфиге package_version: "999.999.999". Запустите программу:
+
+```
+python main.py configs/config.yaml
+```
+
+Ожидаемый вывод:
+
+```
+--- Текущая конфигурация ---                                                                          
+package_name: anyhow                                                                                   
+repository_url: https://github.com/dtolnay/anyhow   
+package_version: 999.999.999                                                               
+----------------------------
+
+Сбор данных о зависимостях для пакета 'anyhow' (версия: 999.999.999)...
+
+ОШИБКА СБОРА ДАННЫХ:
+Не удалось найти файл Cargo.toml в репозитории.
+Проверены URL: ['https://raw.githubusercontent.com/dtolnay/anyhow/v999.999.999/Cargo.toml', 'https://raw.githubusercontent.com/dtolnay/anyhow/999.999.999/Cargo.toml']
+Убедитесь, что URL и версия (тег) указаны верно.
+```
+
+## Проверка работы (Этап 3)
+
+### 1. Успешный запуск (Вывод параметров)
+
+Запуск тестового режима:
+
+```
+python main.py configs/config_test.yaml
+```
+
+Ожидаемый вывод:
+
+```
+--- Текущая конфигурация ---                               
+package_name: A                                                               
+test_repo_mode: True
+filter_substring: SER                                                         
+----------------------------
+                                                           
+Построение графа зависимостей для 'A'...
+  [!] Обнаружен цикл: A -> B -> D -> A
+
+--- Граф зависимостей ---
+A -> B, C
+B -> D
+D -> A
+C -> D, E
+E -> (нет зависимостей)
+-------------------------
+
+Этап 3 успешно завершен.
+```
+
+Запуск реального режима:
+
+```
+python main.py configs/config_real.yaml
+```
+
+Ожидаемый вывод:
+
+```
+--- Текущая конфигурация ---
+package_name: anyhow
+test_repo_mode: False
+filter_substring: 
+----------------------------
+
+Построение графа зависимостей для 'anyhow'...
+  [!] Обнаружен цикл: backtrace -> backtrace
+
+--- Граф зависимостей ---
+anyhow -> backtrace
+backtrace -> backtrace
+-------------------------
+
+Этап 3 успешно завершен.
+```
