@@ -1,5 +1,5 @@
 package_name: "anyhow"
 repository_url: "https://github.com/dtolnay/anyhow"
 test_repo_mode: false
-package_version: "999.999.999"
+package_version: "1.0.75"
 filter_substring: ""

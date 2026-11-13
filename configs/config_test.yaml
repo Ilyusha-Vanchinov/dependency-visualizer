@@ -1,0 +1,5 @@
+package_name: "A"
+repository_url: "./configs/test_graph.json"
+test_repo_mode: true
+package_version: "1.0.0"
+filter_substring: "SER"
