@@ -1,0 +1,5 @@
+package_name: "rand"
+repository_url: "https://github.com/rust-random/rand"
+test_repo_mode: false
+package_version: "0.8.5"
+filter_substring: ""
